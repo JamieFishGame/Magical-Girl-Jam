@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dkk6vxhotx4y5"]
+
+[ext_resource type="Shader" uid="uid://bv10wivdkgfq1" path="res://Shaders/Magic Sky.gdshader" id="1_7vpdx"]
+[ext_resource type="Texture2D" uid="uid://cnqytrxrg4tph" path="res://Sprites/heart.png" id="2_e4aj5"]
+[ext_resource type="Texture2D" uid="uid://bx6tng8t2dvwn" path="res://Sprites/background-pink-seamless.png" id="3_ihiii"]
+[ext_resource type="Script" uid="uid://cyqm4j6pabhju" path="res://Scripts/SPINNY.gd" id="4_etrlk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ie18w"]
+shader = ExtResource("1_7vpdx")
+shader_parameter/g_random_seed = 0.0
+shader_parameter/g_speed = 1.0
+shader_parameter/g_rot_speed = 1.0
+shader_parameter/g_color_a = Color(1, 1, 1, 1)
+shader_parameter/g_color_b = Color(1, 0, 1, 1)
+shader_parameter/tex_sky = ExtResource("3_ihiii")
+shader_parameter/tex_draw = ExtResource("2_e4aj5")
+shader_parameter/scale_top_bottom = Vector2(0.5, 0.5)
+shader_parameter/scale_cylindrical = Vector2(3, 1)
+shader_parameter/horizon_limit = 0.0
+
+[sub_resource type="Sky" id="Sky_8oc6l"]
+sky_material = SubResource("ShaderMaterial_ie18w")
+
+[sub_resource type="Environment" id="Environment_4gjug"]
+background_mode = 2
+sky = SubResource("Sky_8oc6l")
+
+[node name="Magic Sky" type="CanvasLayer" unique_id=1794115193]
+layer = -4
+visible = false
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=2079960953]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=292647473]
+handle_input_locally = false
+render_target_update_mode = 0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=1702854618]
+environment = SubResource("Environment_4gjug")
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=985522896]
+script = ExtResource("4_etrlk")

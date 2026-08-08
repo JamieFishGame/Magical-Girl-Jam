@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ds34ngoqabwf4"]
+
+[ext_resource type="Script" uid="uid://btij2eidur425" path="res://Scripts/Game.gd" id="1_mlf6e"]
+[ext_resource type="PackedScene" uid="uid://dxv324jx2qhg8" path="res://Scenes/player.tscn" id="2_po0ka"]
+[ext_resource type="PackedScene" uid="uid://ca08u4jyjmwai" path="res://Scenes/hud.tscn" id="3_v1wow"]
+
+[node name="Game Scene" type="Node2D" unique_id=1552764295]
+script = ExtResource("1_mlf6e")
+starting_map = "uid://cten012ixbe5s"
+
+[node name="Player" parent="." unique_id=666575457 instance=ExtResource("2_po0ka")]
+unique_name_in_owner = true
+position = Vector2(925, 469)
+
+[node name="Hud" parent="." unique_id=1758162273 node_paths=PackedStringArray("player") instance=ExtResource("3_v1wow")]
+player = NodePath("../Player")

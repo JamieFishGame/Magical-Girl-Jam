@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bieo7x2lniu07"]
+
+[ext_resource type="Script" uid="uid://d2mdfwve8y37" path="res://protractor.gd" id="1_66n11"]
+[ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="2_40jna"]
+[ext_resource type="Texture2D" uid="uid://c373af2o5yrjo" path="res://Sprites/TEMPORARY/Terrain Sets/Moon Symbol.png" id="2_gtp0o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gjug"]
+radius = 9.055386
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8oc6l"]
+radius = 8.062258
+
+[node name="Projectile Base" type="CharacterBody2D" unique_id=1463729598]
+collision_layer = 4
+script = ExtResource("1_66n11")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=483621974]
+texture = ExtResource("2_gtp0o")
+
+[node name="HitArea" type="Area2D" parent="." unique_id=1641097645]
+script = ExtResource("2_40jna")
+metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=638446717]
+shape = SubResource("CircleShape2D_4gjug")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=277498190]
+shape = SubResource("CircleShape2D_8oc6l")

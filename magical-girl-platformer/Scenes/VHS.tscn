@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://pxhr5qgkr7bc"]
+
+[ext_resource type="Shader" uid="uid://cjyr7hscxuwld" path="res://Shaders/VHS Effect.gdshader" id="1_r8q20"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kt01x"]
+frequency = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iwv7r"]
+noise = SubResource("FastNoiseLite_kt01x")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kt01x"]
+shader = ExtResource("1_r8q20")
+shader_parameter/vhs_resolution = Vector2(320, 240)
+shader_parameter/samples = 3
+shader_parameter/crease_noise = 1.0
+shader_parameter/crease_opacity = 0.5
+shader_parameter/filter_intensity = 0.1
+shader_parameter/tape_crease_smear = 0.2
+shader_parameter/tape_crease_intensity = 0.2
+shader_parameter/tape_crease_jitter = 0.1
+shader_parameter/tape_crease_speed = 0.5
+shader_parameter/tape_crease_discoloration = 1.0
+shader_parameter/bottom_border_thickness = 6.0
+shader_parameter/bottom_border_jitter = 6.0
+shader_parameter/noise_intensity = 0.1
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_iwv7r")
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=491916598]
+
+[node name="VHS" type="ColorRect" parent="." unique_id=1896451320]
+visible = false
+material = SubResource("ShaderMaterial_kt01x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
