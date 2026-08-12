@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dlwf58j85sf27"]
+
+[ext_resource type="Script" uid="uid://d0nlplg1e6epr" path="res://Scenes/ink_beam.gd" id="1_jv06e"]
+
+[sub_resource type="Curve" id="Curve_hy0ug"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Ink Beam" type="Line2D" unique_id=751288855]
+points = PackedVector2Array(0, 0)
+closed = true
+width = 5.0
+width_curve = SubResource("Curve_hy0ug")
+default_color = Color(0, 0, 0, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("1_jv06e")

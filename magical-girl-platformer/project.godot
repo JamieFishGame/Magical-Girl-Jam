@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 MetSys="*uid://c01ibpvrp2wsd"
+Glob="*uid://dubnevbk0vofn"
+WorldEnvironmentGlobal="*uid://dlk8n17n88pfu"
 
 [display]
 
@@ -29,7 +31,7 @@ window/stretch/aspect="keep_height"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/MetroidvaniaSystem/EditorExtension/plugin.cfg", "res://addons/MetroidvaniaSystem/plugin.cfg")
+enabled=PackedStringArray("res://addons/MetroidvaniaSystem/EditorExtension/plugin.cfg", "res://addons/MetroidvaniaSystem/plugin.cfg", "res://addons/afterimage_node2D/plugin.cfg")
 
 [input]
 
@@ -88,9 +90,10 @@ MovementAbility={
 [layer_names]
 
 2d_physics/layer_1="Terrain"
-2d_physics/layer_2="Player"
+2d_physics/layer_2="Player Body"
 2d_physics/layer_3="Hurtbox"
 2d_physics/layer_4="Enemy"
+2d_physics/layer_5="Player Hitbox"
 
 [physics]
 
@@ -100,3 +103,4 @@ common/physics_interpolation=true
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+viewport/hdr_2d=true

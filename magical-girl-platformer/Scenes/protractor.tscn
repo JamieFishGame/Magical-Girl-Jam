@@ -19,6 +19,7 @@ texture = ExtResource("2_gtp0o")
 
 [node name="HitArea" type="Area2D" parent="." unique_id=1641097645]
 script = ExtResource("2_40jna")
+damage = 3
 metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=638446717]

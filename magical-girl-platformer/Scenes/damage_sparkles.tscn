@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c8dpe88mtbq33"]
+
+[ext_resource type="Texture2D" uid="uid://cnqytrxrg4tph" path="res://Sprites/heart.png" id="1_f1g4w"]
+[ext_resource type="Script" uid="uid://dfnhs8grys5mf" path="res://Scenes/ParticleFreeOnDone.gd" id="2_kj7k2"]
+
+[sub_resource type="Curve" id="Curve_ukyrk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.35294116, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_pu2lt"]
+curve = SubResource("Curve_ukyrk")
+
+[sub_resource type="Gradient" id="Gradient_p7j4p"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.875)
+colors = PackedColorArray(1.6197081, 0, 1.6197081, 1, 0.37140858, 0, 1.8247963, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f1g4w"]
+gradient = SubResource("Gradient_p7j4p")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_gymyn"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.07058823, 1), 0.0, 0.0, 0, 0, Vector2(0.99998, 0), 0.0, 0.0, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_ukyrk"]
+curve = SubResource("Curve_gymyn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4gjug"]
+particle_flag_disable_z = true
+angle_min = -179.99998
+angle_max = 180.00002
+spread = 30.0
+initial_velocity_max = 379.8
+angular_velocity_min = 103.84998
+angular_velocity_max = 249.22998
+orbit_velocity_min = -0.09599991
+orbit_velocity_max = 0.0960001
+gravity = Vector3(0, 100, 0)
+scale_min = 0.01
+scale_max = 0.03
+scale_curve = SubResource("CurveTexture_ukyrk")
+color = Color(1.1291975, 1.1291975, 1.1291975, 1)
+color_initial_ramp = SubResource("GradientTexture1D_f1g4w")
+alpha_curve = SubResource("CurveTexture_pu2lt")
+turbulence_enabled = true
+turbulence_influence_min = 0.017
+turbulence_influence_max = 0.040000003
+
+[node name="Damage Sparkles" type="GPUParticles2D" unique_id=2005480263]
+emitting = false
+amount = 10
+texture = ExtResource("1_f1g4w")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+trail_lifetime = 0.5
+trail_sections = 18
+trail_section_subdivisions = 8
+process_material = SubResource("ParticleProcessMaterial_4gjug")
+script = ExtResource("2_kj7k2")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

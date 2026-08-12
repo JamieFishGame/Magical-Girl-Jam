@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://blxm60x5jopjp"]
+
+[ext_resource type="Script" uid="uid://buq5h4kjfr2ay" path="res://Scenes/Enemies/floater.gd" id="1_uwbxq"]
+[ext_resource type="PackedScene" uid="uid://b78ceqx5bu0oe" path="res://accelerator_bullet.tscn" id="2_r0dyc"]
+[ext_resource type="PackedScene" uid="uid://cabe4k7bl36p5" path="res://Scenes/damage_control.tscn" id="3_fpcex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gjug"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fpcex"]
+radius = 20.0
+
+[node name="Floater" type="CharacterBody2D" unique_id=337089906]
+collision_layer = 8
+script = ExtResource("1_uwbxq")
+projectileScene = ExtResource("2_r0dyc")
+noiseStrength = 6
+clamp = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1590205323]
+shape = SubResource("CircleShape2D_4gjug")
+
+[node name="Damage Control" parent="." unique_id=1788707555 node_paths=PackedStringArray("core") instance=ExtResource("3_fpcex")]
+health = 12
+core = NodePath("..")
+
+[node name="CollisionShape2D" parent="Damage Control" index="0" unique_id=1976849927]
+shape = SubResource("CircleShape2D_fpcex")
+
+[editable path="Damage Control"]

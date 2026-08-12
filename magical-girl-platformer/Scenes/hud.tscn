@@ -4,6 +4,63 @@
 [ext_resource type="Texture2D" uid="uid://ml5ujvggpxx5" path="res://Sprites/TEMPORARY/Healthbar Frame.png" id="1_fccik"]
 [ext_resource type="Texture2D" uid="uid://c6tgw35trtoan" path="res://Sprites/TEMPORARY/Healthbar.png" id="2_bjfho"]
 [ext_resource type="PackedScene" uid="uid://dch8dyylb7526" path="res://addons/MetroidvaniaSystem/Template/Nodes/Minimap.tscn" id="4_6fbih"]
+[ext_resource type="Shader" uid="uid://cg3dob7yqrtp2" path="res://Scenes/Minimap Renderer.gdshader" id="4_36asn"]
+[ext_resource type="Shader" uid="uid://cjyr7hscxuwld" path="res://Shaders/VHS Effect.gdshader" id="5_t1xeu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gjug"]
+draw_center = false
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(1.1542912, 0, 2.208019, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_43w4t"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t1xeu"]
+resource_local_to_scene = true
+shader = ExtResource("4_36asn")
+shader_parameter/tex = SubResource("ViewportTexture_43w4t")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_36asn"]
+corner_radius_bottom_left = 200
+corner_detail = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t1xeu"]
+draw_center = false
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(1.1542912, 0, 2.208019, 1)
+corner_radius_bottom_left = 223
+corner_detail = 15
+expand_margin_left = 15.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_36asn"]
+frequency = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iwv7r"]
+noise = SubResource("FastNoiseLite_36asn")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8jye8"]
+shader = ExtResource("5_t1xeu")
+shader_parameter/vhs_resolution = Vector2(320, 240)
+shader_parameter/samples = 7
+shader_parameter/crease_noise = 1.0
+shader_parameter/crease_opacity = 0.5
+shader_parameter/filter_intensity = 0.20000000298024
+shader_parameter/tape_crease_smear = 0.2
+shader_parameter/tape_crease_intensity = 0.2
+shader_parameter/tape_crease_jitter = 0.1
+shader_parameter/tape_crease_speed = 0.5
+shader_parameter/tape_crease_discoloration = 1.0
+shader_parameter/bottom_border_thickness = 6.0
+shader_parameter/bottom_border_jitter = 6.0
+shader_parameter/noise_intensity = 0.30000000447036
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_iwv7r")
 
 [node name="Hud" type="CanvasLayer" unique_id=1758162273]
 script = ExtResource("1_bjfho")
@@ -26,55 +83,97 @@ nine_patch_stretch = true
 texture_over = ExtResource("1_fccik")
 texture_progress = ExtResource("2_bjfho")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=997766545]
-texture_filter = 1
+[node name="Frame" type="Panel" parent="." unique_id=1436013905]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4gjug")
+
+[node name="Control" type="Control" parent="." unique_id=1260699781]
+layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -501.0
 offset_bottom = 501.0
 grow_horizontal = 0
-stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=566827936]
-handle_input_locally = false
+[node name="Map Body" type="Panel" parent="." unique_id=1601303845]
+texture_filter = 1
+material = SubResource("ShaderMaterial_t1xeu")
+custom_minimum_size = Vector2(501, 501)
+custom_maximum_size = Vector2(501, 501)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -501.0
+offset_bottom = 501.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_36asn")
+
+[node name="Map Frame" type="Panel" parent="." unique_id=1400761285]
+custom_minimum_size = Vector2(501, 501)
+custom_maximum_size = Vector2(501, 501)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -501.0
+offset_bottom = 501.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1xeu")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=566827936]
 size = Vector2i(501, 501)
-size_2d_override = Vector2i(200, 200)
+size_2d_override = Vector2i(501, 501)
+size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport" unique_id=1619144996]
+[node name="ColorRect" type="ColorRect" parent="SubViewport" unique_id=1619144996]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 301.0
-offset_bottom = 301.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.16862746, 0.05882353, 0.24705882, 1)
 
-[node name="Minimap" parent="SubViewportContainer/SubViewport/ColorRect" unique_id=1794506847 instance=ExtResource("4_6fbih")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -342.5
-offset_top = -330.5
-offset_right = -118.5
-offset_bottom = -106.500015
+[node name="VHS" type="ColorRect" parent="SubViewport" unique_id=1579723037]
+z_index = 6
+material = SubResource("ShaderMaterial_8jye8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Minimap" parent="SubViewport" unique_id=382379606 instance=ExtResource("4_6fbih")]
+offset_left = -90.0
+offset_top = -82.0
+offset_right = 134.0
+offset_bottom = 142.0
 scale = Vector2(3, 3)
 display_player_location = true
 area = Vector2i(7, 7)
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=448157654]
-z_index = -1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -512.0
-offset_bottom = 512.0
-grow_horizontal = 0
-color = Color(0.7921569, 0.15294118, 0.74509805, 1)
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1696508756]
+custom_minimum_size = Vector2(501, 501)
+custom_maximum_size = Vector2(501, 501)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Healthbar" type="TextureProgressBar" parent="." unique_id=820505084]
+texture_filter = 1
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 25.0
+offset_bottom = 19.0
+scale = Vector2(39.74, 39.74)
+step = 0.0
+nine_patch_stretch = true
+stretch_margin_left = 1
+stretch_margin_top = 1
+stretch_margin_right = 1
+stretch_margin_bottom = 1
+texture_over = ExtResource("1_fccik")
+texture_progress = ExtResource("2_bjfho")

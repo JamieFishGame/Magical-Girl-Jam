@@ -4,8 +4,9 @@ class_name Player extends CharacterBody2D
 @onready var glass_pen: HitRay = $"Attacks/Glass Pen"
 @onready var pen_tip: HitArea = $"Attacks/Glass Pen/Pen Tip"
 @onready var attacks: Node2D = $Attacks
-@onready var camera: Camera2D = $Camera2D
-
+@onready var camera: mainCamera = $Camera2D
+const InkSplash = preload("uid://cfftqtx6gj1ak")
+const InkBeam = preload("uid://dlwf58j85sf27")
 
 var maxSpeed = 300.0
 var gravMod = 1
@@ -27,7 +28,8 @@ var jumpBuffer = 0
 
 var jumping = false
 var movementCooldown = 0
-var direction = 0
+var movementAvailable = true
+var direction = 1
 var movementDisable = 0
 var Bumpable = 0
 var manualBounce = false
@@ -35,11 +37,15 @@ var manualBounce = false
 var attackCooldown = 0
 var attackChain = 0
 var attackChainCooldown = 0
+var penabled = false
 
 var floatCooldown = 0
 
+var slowTimer = 0
+var slowStrength = 4
+
 var projCount = 0
-var projMax = 6
+var projMax = 3
 
 var slotDict = {
 	"Weapon A": 0,
@@ -50,22 +56,31 @@ var slotDict = {
 }
 
 var attackDict = {
-	0:"Protractor Attack",
-	1:"Pencil Attack",
-	2:"Glass Pen Attack"
+	0:"Glass Pen Attack",
+	1:"Brush Attack",
+	2:"Stamp Attack"
 }
 
 var cooldownDict = {
 	"Brush Attack2": 1,
 	"Protractor Attack": .3,
-	"Pencil Attack": .5,
+	"Pencil Attack": .3,
 	"Glass Pen Attack": 1,
-	"Palette Attack": .5
+	"Palette Attack": .5,
+	"Stamp Attack": .5
 	
 	
 }
 
+var health = 5
+var maxHealth = 5
+
+func _ready() -> void:
+	Glob.camRef = camera
+	Glob.playerRef = self
+
 func _physics_process(delta: float) -> void:
+	
 	# Add the gravity.
 	if not is_on_floor():
 		if gravMod < dropGrav and velocity.y > 0:
@@ -86,6 +101,7 @@ func _physics_process(delta: float) -> void:
 		jumpBuffer = jumpBufferLength
 	# Handle jump.
 	if is_on_floor():
+		movementAvailable = true
 		gravMod = 1
 		jumpHold = 0
 		jumping = false
@@ -134,23 +150,26 @@ func _physics_process(delta: float) -> void:
 	
 	if movementCooldown > 0:
 		movementCooldown -= delta
-	if Input.is_action_just_pressed("MovementAbility") and movementCooldown <= 0:
+	if Input.is_action_just_pressed("MovementAbility") and movementCooldown <= 0 and movementAvailable:
 		ForwardDash(700) 
+		movementAvailable = is_on_floor()
 	
 	
 	if bounceTimer > 0:
 		var collisionInfo = move_and_collide(velocity*delta, true)
 		if collisionInfo and (floorBounce == (collisionInfo.get_normal() == Vector2.UP) or wallBounce == (collisionInfo.get_normal() != Vector2.UP)) and !manualBounce > (jumpBuffer > 0):
+			var bumpSpeed = velocity.length()
 			velocity = velocity.bounce(collisionInfo.get_normal()) * bounceDecay
 			if Bumpable > 0:
 				movementDisable = .3
 				#direction  *= -1
 				floatCooldown = 0
+				camera.CamShake(bumpSpeed/30.0,Vector2.ZERO,collisionInfo.get_normal())
 		bounceTimer -= delta
 	if Bumpable > 0:
 		Bumpable -= delta
 	
-	if attackCooldown <= 0:# and !attack_player.is_playing()
+	if attackCooldown <= 0 and !attack_player.is_playing():
 		for action in slotDict.keys():
 			if Input.is_action_pressed(action):
 				var idx = slotDict[action]
@@ -161,14 +180,18 @@ func _physics_process(delta: float) -> void:
 				attack_player.play(anim)
 	else:
 		attackCooldown -= delta
-	if glass_pen.enabled:
-		pen_tip.global_position = glass_pen.get_collision_point()
-	
+	GlassPen()
 	if attackChainCooldown > 0:
 		attackChainCooldown -= delta
-	else:
+	elif attackChainCooldown < 0:
 		attackChain = 0
 	
+		
+	
+	if slowTimer > 0:
+		velocity -= velocity * slowStrength * delta
+		slowTimer -= delta
+		
 	
 	move_and_slide()
 
@@ -181,6 +204,7 @@ func ForwardDash(strength):
 	floorBounce = false
 	wallBounce = true
 	manualBounce = false
+	slowTimer = 0
 	
 	velocity.y = 0
 	floatCooldown = .2
@@ -211,7 +235,58 @@ func Projectile(projRef:String):
 		var proj: projectile = projScene.instantiate()
 		proj.global_position = global_position
 		proj.direction.x = direction
-		proj.player = self
+		proj.playerRef = self
 		print(proj.direction)
 		add_sibling(proj)
 		projCount += 1
+
+func OnHitEnemy(area:Area2D):
+	if area.find_parent("Player") != null:
+		if !is_on_floor():
+			velocity.y = -100
+			floatCooldown = .5
+			movementAvailable = true
+		slowTimer = .5
+		slowStrength = 5
+		
+		
+		for collider in area.get_children():
+			
+			if collider is CollisionShape2D:
+				collider .set_deferred("disabled",true)
+
+func GlassPen():
+	if glass_pen.enabled and penabled:
+		glass_pen.force_raycast_update()
+		if glass_pen.is_colliding():
+			var point = glass_pen.get_collision_point()
+			pen_tip.global_position = point
+			InkSpawn(point,glass_pen.get_collision_normal().angle())
+			if !glass_pen.get_collider() is DamageControl:
+				camera.CamShake(10,point)
+		
+		var beamInst: Line2D = InkBeam.instantiate()
+		if glass_pen.is_colliding():
+			beamInst.global_position = glass_pen.get_collision_point()
+		else: 
+			beamInst.global_position = glass_pen.to_global(glass_pen.target_position)
+		beamInst.add_point(beamInst.to_local(global_position))
+		add_sibling(beamInst)
+	
+		
+		penabled = false
+		
+	
+		
+	
+func InkSpawn(pos: Vector2,angle: float):
+	
+	var inkInst: GPUParticles2D = InkSplash.instantiate()
+	inkInst.global_position = pos
+	inkInst.rotation = angle
+	add_sibling(inkInst)
+	inkInst.emitting = true
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	health -= 1

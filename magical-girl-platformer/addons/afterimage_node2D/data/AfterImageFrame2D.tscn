@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dfrbrwj6plpom"]
+
+[ext_resource type="Shader" uid="uid://d4dxcrmye3ifx" path="res://addons/afterimage_node2D/data/Monochrome.gdshader" id="1_7p4no"]
+[ext_resource type="Script" uid="uid://cv28cqmiedb8p" path="res://addons/afterimage_node2D/data/after_image_frame_2d.gd" id="2_6wlp1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yklw0"]
+resource_local_to_scene = true
+shader = ExtResource("1_7p4no")
+shader_parameter/monochrome_color = Color(1, 1, 1, 1)
+shader_parameter/enable = false
+
+[node name="AfterImageFrame2d" type="Sprite2D" unique_id=1697032663]
+top_level = true
+material = SubResource("ShaderMaterial_yklw0")
+use_parent_material = true
+script = ExtResource("2_6wlp1")

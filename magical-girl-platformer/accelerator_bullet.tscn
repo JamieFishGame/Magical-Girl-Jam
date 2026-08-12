@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://b78ceqx5bu0oe"]
+
+[ext_resource type="Script" uid="uid://bjodyrx1xp7n2" path="res://accelerator_bullet.gd" id="1_ual3m"]
+[ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="2_5e57d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gjug"]
+
+[node name="Accelerator Bullet" type="CharacterBody2D" unique_id=1463729598]
+collision_layer = 0
+script = ExtResource("1_ual3m")
+startingSpeed = 100
+Base = 10
+playerProj = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1706711875]
+shape = SubResource("CircleShape2D_4gjug")
+
+[node name="HitArea" type="Area2D" parent="." unique_id=136431329]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("2_5e57d")
+metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=968172672]
+shape = SubResource("CircleShape2D_4gjug")

@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://cabe4k7bl36p5"]
+
+[ext_resource type="Script" uid="uid://q8y5074wwt6w" path="res://Scripts/DamageControl.gd" id="1_4iq51"]
+[ext_resource type="Texture2D" uid="uid://ml5ujvggpxx5" path="res://Sprites/TEMPORARY/Healthbar Frame.png" id="2_grjee"]
+[ext_resource type="Texture2D" uid="uid://c6tgw35trtoan" path="res://Sprites/TEMPORARY/Healthbar.png" id="3_olbjh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gjug"]
+radius = 34.058773
+
+[node name="Damage Control" type="Area2D" unique_id=1788707555]
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("1_4iq51")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1976849927]
+shape = SubResource("CircleShape2D_4gjug")
+
+[node name="Healthbar" type="TextureProgressBar" parent="." unique_id=1451720237]
+texture_filter = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -66.0
+offset_right = 30.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 0
+step = 0.0
+nine_patch_stretch = true
+texture_over = ExtResource("2_grjee")
+texture_progress = ExtResource("3_olbjh")
+
+[connection signal="area_entered" from="." to="." method="_on_hit_area_area_entered"]

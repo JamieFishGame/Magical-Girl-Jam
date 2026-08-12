@@ -3,8 +3,13 @@
 [ext_resource type="Script" uid="uid://dc38pwihawm87" path="res://Scripts/player_movement.gd" id="1_fkybt"]
 [ext_resource type="Shader" uid="uid://dj5msyjgq6btq" path="res://Shaders/Squiggle Effect.gdshader" id="2_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://dbm5hx7auhb41" path="res://Sprites/Player/magical_girl_draft_COLOR.png" id="3_3smsa"]
+[ext_resource type="Texture2D" uid="uid://b0xonpv2ckgqr" path="res://Sprites/Player/Running/IMG_5824.jpg" id="3_tx1dd"]
 [ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="4_8erm5"]
+[ext_resource type="Texture2D" uid="uid://7quia008cc7x" path="res://Sprites/Player/Running/IMG_5825.jpg" id="4_gymyn"]
+[ext_resource type="Script" uid="uid://c64civuxkedfu" path="res://Scenes/camera.gd" id="4_x3wgy"]
 [ext_resource type="Script" uid="uid://6ux44yglj5y2" path="res://Scripts/Hit_Ray.gd" id="5_f1ek2"]
+[ext_resource type="Texture2D" uid="uid://bqam7asndiewo" path="res://Sprites/Player/Running/IMG_5826.jpg" id="5_pu2lt"]
+[ext_resource type="Texture2D" uid="uid://dw23d1q4eeunm" path="res://Sprites/Player/Running/IMG_5827.jpg" id="6_ukyrk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gjug"]
 size = Vector2(22, 57)
@@ -27,6 +32,23 @@ shader_parameter/noise = SubResource("NoiseTexture2D_ie18w")
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("3_tx1dd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gymyn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_pu2lt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ukyrk")
+}],
+"loop": 1,
+"name": &"Running",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_3smsa")
 }],
 "loop": 1,
@@ -45,6 +67,9 @@ radius = 2.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2i6u"]
 size = Vector2(19.5, 86)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8oc6l"]
+radius = 19.025257
 
 [sub_resource type="Animation" id="Animation_5qo1a"]
 resource_name = "Brush Attack0"
@@ -224,7 +249,7 @@ tracks/6/keys = {
 
 [sub_resource type="Animation" id="Animation_fkybt"]
 resource_name = "Brush Attack2"
-length = 0.56666666
+length = 0.73333335
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -337,6 +362,20 @@ tracks/1/keys = {
 "update": 1,
 "values": [true, false, true]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"penabled", true],
+"method": &"set"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_h2i6u"]
 resource_name = "Palette Attack"
@@ -364,7 +403,7 @@ tracks/0/path = NodePath("../Pencil/CollisionShape2D:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0.1, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -522,6 +561,69 @@ tracks/10/keys = {
 "update": 1,
 "values": [6]
 }
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("../Stamp/CollisionShape2D:disabled")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_3smsa"]
+resource_name = "Stamp Attack"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Stamp/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.06666666, 0.76666665, 0.8333333, 0.8666667, 0.93333334, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [&"slowTimer", 1.0],
+"method": &"set"
+}, {
+"args": [&"floatCooldown", 2.0],
+"method": &"set"
+}, {
+"args": [&"movementDisable", 2.0],
+"method": &"set"
+}, {
+"args": [&"floorBounce", true],
+"method": &"set"
+}, {
+"args": [&"Bumpable", 1.0],
+"method": &"set"
+}, {
+"args": [&"bounceDecay", 0.2],
+"method": &"set"
+}, {
+"args": [&"bounceTimer", 1.0],
+"method": &"set"
+}, {
+"args": [&"velocity", Vector2(0, 1200)],
+"method": &"set"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5qo1a"]
 _data = {
@@ -532,12 +634,12 @@ _data = {
 &"Palette Attack": SubResource("Animation_h2i6u"),
 &"Pencil Attack": SubResource("Animation_dqfvb"),
 &"Protractor Attack": SubResource("Animation_x3wgy"),
-&"RESET": SubResource("Animation_yrarp")
+&"RESET": SubResource("Animation_yrarp"),
+&"Stamp Attack": SubResource("Animation_3smsa")
 }
 
 [node name="Player" type="CharacterBody2D" unique_id=666575457]
 collision_layer = 2
-collision_mask = 9
 script = ExtResource("1_fkybt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=593927742]
@@ -547,16 +649,20 @@ shape = SubResource("RectangleShape2D_4gjug")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2122046018]
 texture_filter = 1
 material = SubResource("ShaderMaterial_8oc6l")
-position = Vector2(1.9999999, 8.98)
+position = Vector2(-2.3841858e-07, 28)
 scale = Vector2(0.022, 0.022)
 sprite_frames = SubResource("SpriteFrames_4gjug")
-frame_progress = 0.16591191
-offset = Vector2(500, 0)
+animation = &"Running"
+autoplay = "Running"
+frame_progress = 0.93493456
+offset = Vector2(136.36368, -318.1819)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1513405627]
-position = Vector2(0, 50.980003)
-zoom = Vector2(5, 5)
+position = Vector2(0, 26)
+zoom = Vector2(3, 3)
 position_smoothing_enabled = true
+position_smoothing_speed = 4.0
+script = ExtResource("4_x3wgy")
 
 [node name="Attacks" type="Node2D" parent="." unique_id=622033593]
 position = Vector2(0, 27.980003)
@@ -600,7 +706,8 @@ disabled = true
 position = Vector2(15, -30)
 enabled = false
 target_position = Vector2(1000, 0)
-collision_mask = 8
+collision_mask = 9
+hit_from_inside = true
 collide_with_areas = true
 script = ExtResource("5_f1ek2")
 
@@ -609,7 +716,7 @@ collision_layer = 4
 collision_mask = 0
 monitoring = false
 script = ExtResource("4_8erm5")
-damage = 8
+damage = 12
 metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Glass Pen/Pen Tip" unique_id=1130044576]
@@ -617,7 +724,6 @@ shape = SubResource("CircleShape2D_4gjug")
 disabled = true
 
 [node name="Palette" type="Area2D" parent="Attacks" unique_id=739641719]
-visible = false
 collision_layer = 4
 collision_mask = 0
 monitoring = false
@@ -630,8 +736,29 @@ position = Vector2(22, -17)
 shape = SubResource("RectangleShape2D_h2i6u")
 disabled = true
 
+[node name="Stamp" type="Area2D" parent="Attacks" unique_id=679559319]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_8erm5")
+damage = 12
+metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Stamp" unique_id=528959115]
+position = Vector2(1, 6.0199966)
+shape = SubResource("CircleShape2D_8oc6l")
+disabled = true
+
 [node name="Attack Player" type="AnimationPlayer" parent="Attacks" unique_id=1205307009]
 root_node = NodePath("../Brush")
 libraries/ = SubResource("AnimationLibrary_5qo1a")
 
+[node name="Hitbox" type="Area2D" parent="." unique_id=1504483892]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=2057155795]
+position = Vector2(1, 7.4800034)
+shape = SubResource("RectangleShape2D_4gjug")
+
 [connection signal="animation_finished" from="Attacks/Attack Player" to="." method="_on_attack_player_animation_finished"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

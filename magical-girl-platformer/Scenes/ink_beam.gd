@@ -1,14 +1,12 @@
-extends projectile
+extends Line2D
 
-var pull = 4
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	velocity = direction * 500
-	
+	#points.append(Vector2.ZERO)
+	var fadeTween = create_tween()
+	fadeTween.tween_property(self,"modulate",Color.TRANSPARENT,3.0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
-	velocity -= pull * (position - playerRef.position) * delta
-	move_and_slide()
-	
+	pass

@@ -1,5 +1,6 @@
 extends CanvasLayer
 @onready var attack_cooldown: TextureProgressBar = $"Attack Cooldown"
+@onready var healthbar: TextureProgressBar = $Healthbar
 
 @export var player: Player
 
@@ -20,4 +21,7 @@ func _process(delta: float) -> void:
 		
 		attack_cooldown.value = attack_cooldown.max_value - player.attackCooldown
 		
+		healthbar.size.x = 2*player.maxHealth
+		healthbar.max_value = player.maxHealth
+		healthbar.value = player.health
 		

@@ -28,7 +28,6 @@ shader_parameter/noise_texture = SubResource("NoiseTexture2D_iwv7r")
 [node name="CanvasLayer" type="CanvasLayer" unique_id=491916598]
 
 [node name="VHS" type="ColorRect" parent="." unique_id=1896451320]
-visible = false
 material = SubResource("ShaderMaterial_kt01x")
 anchors_preset = 15
 anchor_right = 1.0

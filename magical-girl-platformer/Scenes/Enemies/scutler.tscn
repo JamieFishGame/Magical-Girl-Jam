@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://03bgvykjkdh2"]
+
+[ext_resource type="Script" uid="uid://c5ekdkie0g30x" path="res://Scenes/Enemies/scutler.gd" id="1_2xv22"]
+[ext_resource type="PackedScene" uid="uid://cabe4k7bl36p5" path="res://Scenes/damage_control.tscn" id="2_2xv22"]
+[ext_resource type="Texture2D" uid="uid://bkat5d0bvsyic" path="res://Sprites/New, Best Heart.png" id="3_2rf2b"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2xv22"]
+radius = 20.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gjug"]
+size = Vector2(40, 16)
+
+[node name="Scutler" type="CharacterBody2D" unique_id=824342146]
+collision_layer = 0
+script = ExtResource("1_2xv22")
+speed = 40
+
+[node name="Damage Control" parent="." unique_id=1788707555 node_paths=PackedStringArray("sprite", "core") instance=ExtResource("2_2xv22")]
+sprite = NodePath("../Flip/Sprite2D")
+core = NodePath("..")
+
+[node name="CollisionShape2D" parent="Damage Control" index="0" unique_id=1976849927]
+shape = SubResource("CircleShape2D_2xv22")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1811179196]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_4gjug")
+
+[node name="Flip" type="Node2D" parent="." unique_id=575054572]
+
+[node name="RayCast2D" type="RayCast2D" parent="Flip" unique_id=1593367701]
+position = Vector2(20, 0)
+target_position = Vector2(0, 3)
+
+[node name="Sprite2D" type="Sprite2D" parent="Flip" unique_id=323781287]
+rotation = -1.5707964
+scale = Vector2(2.49, 2.49)
+texture = ExtResource("3_2rf2b")
+
+[editable path="Damage Control"]
