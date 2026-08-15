@@ -13,5 +13,5 @@ func _process(delta: float) -> void:
 	time += delta
 	var speed = startingSpeed*pow(Base,time)
 	velocity = direction * speed
-	if velocity.length() > 2000:
+	if velocity.length() > 3000:
 		queue_free()

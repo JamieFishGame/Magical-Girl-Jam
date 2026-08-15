@@ -5,8 +5,13 @@ class_name Player extends CharacterBody2D
 @onready var pen_tip: HitArea = $"Attacks/Glass Pen/Pen Tip"
 @onready var attacks: Node2D = $Attacks
 @onready var camera: mainCamera = $Camera2D
+@onready var hitbox: Area2D = $Hitbox
+@onready var hitboxShape: CollisionShape2D = $Hitbox/CollisionShape2D
+@onready var ray: RayCast2D = $Ray
+var hud: Hud
 const InkSplash = preload("uid://cfftqtx6gj1ak")
 const InkBeam = preload("uid://dlwf58j85sf27")
+
 
 var maxSpeed = 300.0
 var gravMod = 1
@@ -47,6 +52,12 @@ var slowStrength = 4
 var projCount = 0
 var projMax = 3
 
+var iTimer = 0
+
+var healCharge = 0
+var healTime = 2
+var healable = true
+
 var slotDict = {
 	"Weapon A": 0,
 	"Weapon B": 1,
@@ -74,11 +85,13 @@ var cooldownDict = {
 
 var health = 5
 var maxHealth = 5
+var silver = 0
 
 func _ready() -> void:
 	Glob.camRef = camera
 	Glob.playerRef = self
-
+	if $"../Hud" != null:
+		hud = $"../Hud"
 func _physics_process(delta: float) -> void:
 	
 	# Add the gravity.
@@ -151,7 +164,9 @@ func _physics_process(delta: float) -> void:
 	if movementCooldown > 0:
 		movementCooldown -= delta
 	if Input.is_action_just_pressed("MovementAbility") and movementCooldown <= 0 and movementAvailable:
-		ForwardDash(700) 
+		#Warp(300)
+		FloatDash(700)
+		#ForwardDash(700) 
 		movementAvailable = is_on_floor()
 	
 	
@@ -186,16 +201,41 @@ func _physics_process(delta: float) -> void:
 	elif attackChainCooldown < 0:
 		attackChain = 0
 	
-		
+	if iTimer > 0:
+		iTimer -= delta
+	elif iTimer < 0:
+		for area in hitbox.get_overlapping_areas():
+			iTimer = 0
+			if area is HitArea:
+				_on_hitbox_area_entered(area)
 	
 	if slowTimer > 0:
 		velocity -= velocity * slowStrength * delta
 		slowTimer -= delta
-		
 	
+	if Input.is_action_just_released("Heal"):
+		healable = true
+	if Input.is_action_just_pressed("Heal") and is_on_floor():
+		velocity += Vector2.UP * 50
+	if Input.is_action_pressed("Heal") and healable:
+		healCharge += delta
+		slowStrength = 2.5
+		slowTimer = delta
+		floatCooldown = delta
+		movementDisable = delta
+	else:
+		healCharge = 0
+	if healCharge >= healTime:
+		print("HEAL")
+		healable = false
+		healCharge = 0
+		health = maxHealth
+		camera.CamShake(30)
+		
 	move_and_slide()
 
 func ForwardDash(strength):
+	iTimer = .3
 	movementCooldown = .5
 	velocity.x = strength * direction
 	bounceTimer = .2
@@ -210,16 +250,36 @@ func ForwardDash(strength):
 	floatCooldown = .2
 	jumping = false
 	
-func WaveDash(strength):
-	movementCooldown = 1
-	var diagonal = Vector2(direction,.5).normalized()
-	velocity = strength * diagonal
-	bounceTimer = .5
-	movementDisable = .5
-	bounceDecay = .9
-	floorBounce = true
+func FloatDash(strength):
+	iTimer = .3
+	movementCooldown = .5
+	velocity.x = strength * direction
+	bounceTimer = .2
+	bounceDecay = .3
+	Bumpable = .2
+	floorBounce = false
 	wallBounce = true
-	manualBounce = true
+	manualBounce = false
+	slowTimer = 0
+	
+	velocity.y = 0
+	floatCooldown = .1
+	jumping = false
+	var diagonal = Vector2(direction,-.8).normalized()
+	velocity = strength * diagonal
+
+func Warp(strength=0):
+	movementDisable = .3
+	floatCooldown = .2
+	movementCooldown = 2
+	jumping = false
+	velocity.y = 0
+	ray.target_position = Vector2(direction,0) * strength
+	ray.force_raycast_update()
+	if ray.is_colliding():
+		position = ray.get_collision_point()
+	else:
+		position = ray.global_position + ray.target_position
 
 func _on_attack_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name in cooldownDict:
@@ -289,4 +349,27 @@ func InkSpawn(pos: Vector2,angle: float):
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	health -= 1
+	if area is HitArea:
+		if iTimer <= 0:
+			healable = false
+			healCharge = 0
+			movementDisable = 1
+			health -= 1
+			area.disableTimer = 2
+			iTimer = 2
+			hud.vhsTimer = .1
+			var enemy = area.get_parent()
+			var velo: Vector2
+			if enemy is CharacterBody2D:
+				if enemy.velocity == Vector2.ZERO:
+					velocity = Vector2.UP
+				else:
+					velocity = enemy.velocity * 1.5
+			else:
+				velocity = Vector2.UP
+			velocity = velocity.normalized() * clampf(velocity.length(), 500, 2000)
+			
+			camera.CamShake(30,Vector2.ZERO,velocity.normalized())
+	elif area is silver:
+		silver += area.amount
+		area.queue_free()

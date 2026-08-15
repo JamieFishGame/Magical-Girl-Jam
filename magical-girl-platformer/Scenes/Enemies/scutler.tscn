@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c5ekdkie0g30x" path="res://Scenes/Enemies/scutler.gd" id="1_2xv22"]
 [ext_resource type="PackedScene" uid="uid://cabe4k7bl36p5" path="res://Scenes/damage_control.tscn" id="2_2xv22"]
 [ext_resource type="Texture2D" uid="uid://bkat5d0bvsyic" path="res://Sprites/New, Best Heart.png" id="3_2rf2b"]
+[ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="4_lsero"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2xv22"]
 radius = 20.0
@@ -16,8 +17,10 @@ script = ExtResource("1_2xv22")
 speed = 40
 
 [node name="Damage Control" parent="." unique_id=1788707555 node_paths=PackedStringArray("sprite", "core") instance=ExtResource("2_2xv22")]
+health = 12
 sprite = NodePath("../Flip/Sprite2D")
 core = NodePath("..")
+silverCount = 3
 
 [node name="CollisionShape2D" parent="Damage Control" index="0" unique_id=1976849927]
 shape = SubResource("CircleShape2D_2xv22")
@@ -36,5 +39,14 @@ target_position = Vector2(0, 3)
 rotation = -1.5707964
 scale = Vector2(2.49, 2.49)
 texture = ExtResource("3_2rf2b")
+
+[node name="HitArea" type="Area2D" parent="." unique_id=751993733]
+collision_layer = 32
+collision_mask = 16
+script = ExtResource("4_lsero")
+metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=325944422]
+shape = SubResource("CircleShape2D_2xv22")
 
 [editable path="Damage Control"]
