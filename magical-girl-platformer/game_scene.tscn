@@ -6,7 +6,7 @@
 
 [node name="Game Scene" type="Node2D" unique_id=1552764295]
 script = ExtResource("1_mlf6e")
-starting_map = "uid://cten012ixbe5s"
+starting_map = "uid://bce6c70afx0ux"
 
 [node name="Player" parent="." unique_id=666575457 instance=ExtResource("2_po0ka")]
 unique_name_in_owner = true

@@ -1,5 +1,6 @@
 class_name Player extends CharacterBody2D
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sprite: Sprite2D = $"Body"
+
 @onready var attack_player: AnimationPlayer = $"Attacks/Attack Player"
 @onready var glass_pen: HitRay = $"Attacks/Glass Pen"
 @onready var pen_tip: HitArea = $"Attacks/Glass Pen/Pen Tip"
@@ -8,15 +9,16 @@ class_name Player extends CharacterBody2D
 @onready var hitbox: Area2D = $Hitbox
 @onready var hitboxShape: CollisionShape2D = $Hitbox/CollisionShape2D
 @onready var ray: RayCast2D = $Ray
+@onready var body_anim: AnimationPlayer = $"Body Anim"
 var hud: Hud
 const InkSplash = preload("uid://cfftqtx6gj1ak")
 const InkBeam = preload("uid://dlwf58j85sf27")
 
 
-var maxSpeed = 300.0
+var maxSpeed = 214.0
 var gravMod = 1
-var jumpVelocity = -300.0
-var accel = 600
+var jumpVelocity = -214
+var accel = 428
 var dropSpeed = 150
 var dropGrav = 2
 
@@ -68,7 +70,7 @@ var slotDict = {
 
 var attackDict = {
 	0:"Glass Pen Attack",
-	1:"Brush Attack",
+	1:"Pencil Attack",
 	2:"Stamp Attack"
 }
 
@@ -145,6 +147,18 @@ func _physics_process(delta: float) -> void:
 				velocity.x += actualAccel
 	else:
 		movementDisable -= delta
+	
+	
+	if is_on_floor():
+		if Input.get_axis("Left", "Right") != 0:
+			body_anim.play("Running")
+	elif velocity.y < 0:
+		body_anim.play("Up")
+	else:
+		body_anim.play("Down")
+	
+	
+	
 	
 	if floatCooldown <= 0:
 		if is_on_floor() or sign(direction) != sign(velocity.x):

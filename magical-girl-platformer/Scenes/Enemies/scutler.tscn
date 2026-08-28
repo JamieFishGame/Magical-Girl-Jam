@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://03bgvykjkdh2"]
 
-[ext_resource type="Script" uid="uid://c5ekdkie0g30x" path="res://Scenes/Enemies/scutler.gd" id="1_2xv22"]
+[ext_resource type="Script" uid="uid://c5ekdkie0g30x" path="res://Scripts/scutler.gd" id="1_2xv22"]
 [ext_resource type="PackedScene" uid="uid://cabe4k7bl36p5" path="res://Scenes/damage_control.tscn" id="2_2xv22"]
 [ext_resource type="Texture2D" uid="uid://bkat5d0bvsyic" path="res://Sprites/New, Best Heart.png" id="3_2rf2b"]
 [ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="4_lsero"]

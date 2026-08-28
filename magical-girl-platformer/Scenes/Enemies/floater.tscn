@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://blxm60x5jopjp"]
 
-[ext_resource type="Script" uid="uid://buq5h4kjfr2ay" path="res://Scenes/Enemies/floater.gd" id="1_uwbxq"]
+[ext_resource type="Script" uid="uid://buq5h4kjfr2ay" path="res://Scripts/floater.gd" id="1_uwbxq"]
 [ext_resource type="PackedScene" uid="uid://b78ceqx5bu0oe" path="res://accelerator_bullet.tscn" id="2_r0dyc"]
 [ext_resource type="PackedScene" uid="uid://cabe4k7bl36p5" path="res://Scenes/damage_control.tscn" id="3_fpcex"]
 

@@ -5,9 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://d4gfqraeei6um" path="res://Sprites/Heart Icon.png" id="3_mq1bj"]
 [ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="4_0fcji"]
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="5_iwv7r"]
-[ext_resource type="PackedScene" uid="uid://03bgvykjkdh2" path="res://Scenes/Enemies/scutler.tscn" id="5_kt01x"]
-[ext_resource type="PackedScene" uid="uid://blxm60x5jopjp" path="res://Scenes/Enemies/floater.tscn" id="6_kt01x"]
-[ext_resource type="PackedScene" uid="uid://d2veo6mhkqfk8" path="res://Scenes/jumper.tscn" id="7_p7j4p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4gjug"]
 radius = 33.37664
@@ -20,7 +17,7 @@ tile_map_data = PackedByteArray("AAD9/wAAAAAAAAMAAAD+/wAAAAAAAAMAAAD//wAAAAAAAAM
 tile_set = ExtResource("1_skmq4")
 
 [node name="Damage Control" parent="." unique_id=1788707555 node_paths=PackedStringArray("sprite", "core") instance=ExtResource("2_707cn")]
-position = Vector2(1319, 1021)
+position = Vector2(682, 1118)
 health = 100
 sprite = NodePath("Sprite2D")
 core = NodePath(".")
@@ -39,12 +36,3 @@ metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
 shape = SubResource("CircleShape2D_4gjug")
 
 [node name="RoomInstance" parent="." unique_id=1020652650 instance=ExtResource("5_iwv7r")]
-
-[node name="Scutler" parent="." unique_id=824342146 instance=ExtResource("5_kt01x")]
-position = Vector2(1585, 1106)
-
-[node name="Floater" parent="." unique_id=337089906 instance=ExtResource("6_kt01x")]
-position = Vector2(1668, 982)
-
-[node name="Jumper" parent="." unique_id=331692763 instance=ExtResource("7_p7j4p")]
-position = Vector2(1710, 1125)

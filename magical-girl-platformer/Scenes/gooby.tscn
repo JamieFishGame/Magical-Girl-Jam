@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dr1ccfu0tdff5"]
+
+[ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="1_vdac1"]
+[ext_resource type="Script" uid="uid://bbqs3ag2l1fk0" path="res://addons/MetroidvaniaSystem/Scripts/RoomInstance.gd" id="2_3qgds"]
+
+[node name="Map" type="Node2D" unique_id=1570702630]
+
+[node name="RoomInstance" type="Node2D" parent="." unique_id=1020652650 instance=ExtResource("1_vdac1")]
+script = ExtResource("2_3qgds")
