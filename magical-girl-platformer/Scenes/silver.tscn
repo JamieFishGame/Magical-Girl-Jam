@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bm72pvmud6vdp"]
+
+[ext_resource type="Script" uid="uid://dgqqj50hsq5he" path="res://Scenes/silver.gd" id="1_tu15s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ftl1l"]
+
+[node name="Silver" type="Area2D" unique_id=892272261]
+collision_layer = 32
+collision_mask = 16
+script = ExtResource("1_tu15s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=131505134]
+shape = SubResource("CircleShape2D_ftl1l")

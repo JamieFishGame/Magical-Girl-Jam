@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://d2veo6mhkqfk8"]
+
+[ext_resource type="Script" uid="uid://cvoq5jqvdcao8" path="res://Scenes/jumper.gd" id="1_do4k8"]
+[ext_resource type="PackedScene" uid="uid://cabe4k7bl36p5" path="res://Scenes/damage_control.tscn" id="2_uo68r"]
+[ext_resource type="Script" uid="uid://gaoxb7p2qnlr" path="res://Scripts/Hit_Area.gd" id="3_7iy36"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gjug"]
+radius = 16.0
+height = 60.0
+
+[node name="Jumper" type="CharacterBody2D" unique_id=331692763]
+collision_layer = 0
+script = ExtResource("1_do4k8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1763611579]
+shape = SubResource("CapsuleShape2D_4gjug")
+
+[node name="Damage Control" parent="." unique_id=1788707555 node_paths=PackedStringArray("core") instance=ExtResource("2_uo68r")]
+core = NodePath("..")
+silverCount = 8
+
+[node name="CollisionShape2D" parent="Damage Control" index="0" unique_id=1976849927]
+shape = SubResource("CapsuleShape2D_4gjug")
+
+[node name="HitArea" type="Area2D" parent="." unique_id=1067675203]
+collision_layer = 32
+collision_mask = 16
+script = ExtResource("3_7iy36")
+metadata/_custom_type_script = "uid://gaoxb7p2qnlr"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=1564301250]
+shape = SubResource("CapsuleShape2D_4gjug")
+
+[editable path="Damage Control"]

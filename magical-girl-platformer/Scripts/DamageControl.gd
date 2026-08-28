@@ -2,6 +2,7 @@ class_name DamageControl extends Area2D
 
 const DamNumScene = preload("uid://d22brtrf8062c")
 const DamParticles = preload("uid://c8dpe88mtbq33")
+const silverScene = preload("uid://bm72pvmud6vdp")
 
 @export var health := 20
 @export var deathSpeed = .5
@@ -9,6 +10,7 @@ const DamParticles = preload("uid://c8dpe88mtbq33")
 @export var core: Node2D
 @onready var healthbar: TextureProgressBar = $Healthbar
 @onready var player = Glob.playerRef
+@export var silverCount = 5
 var iSecs = 0
 var iSecAmount = .3
 # Called when the node enters the scene tree for the first time.
@@ -63,6 +65,11 @@ func TakeDamage(damage,area: Area2D):
 		Die()
 	
 func Die():
+	for i in silverCount:
+		var silverInst: silver = silverScene.instantiate()
+		silverInst.global_position = global_position
+		get_tree().root.add_child(silverInst)
+	
 	var fadeTween = create_tween()
 	fadeTween.tween_property(core,"modulate",Color.TRANSPARENT,deathSpeed)
 	await get_tree().create_timer(deathSpeed).timeout
