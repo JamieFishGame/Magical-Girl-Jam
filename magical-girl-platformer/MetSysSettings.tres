@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_ui0vk")
 theme = ExtResource("2_ui0vk")
+in_game_cell_size = Vector2(320, 320)
 discover_whole_rooms = true
-_last_scene_folder = "res://Scenes"
+_last_scene_folder = "res://Scenes/Rooms"
