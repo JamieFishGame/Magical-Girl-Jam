@@ -22,3 +22,6 @@ position = Vector2(837, 313)
 
 [node name="Scutler" parent="." unique_id=824342146 instance=ExtResource("5_53t85")]
 position = Vector2(138, 258)
+
+[node name="Floater2" parent="." unique_id=1798849161 instance=ExtResource("3_kdtvj")]
+position = Vector2(404, 210)

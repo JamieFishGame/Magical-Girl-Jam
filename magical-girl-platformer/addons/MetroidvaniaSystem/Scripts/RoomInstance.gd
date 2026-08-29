@@ -23,15 +23,16 @@ func _enter_tree() -> void:
 		MetSys.current_room = self
 	else:
 		if not owner:
-			#print("Owner Error")
+			print("Owner Error")
 			return
 		
 		if owner.get_meta(&"fake_map", false):
-			#print("Fake Map")
+			print("Fake Map")
 			queue_free()
 			return
 		
 		if initialized:
+			#print("differed")
 			_update_neighbor_previews.call_deferred()
 	
 	if initialized:
@@ -44,7 +45,6 @@ func _enter_tree() -> void:
 		var theme: Theme = load("uid://dfyoc5jqnnpf5")
 		GRID_COLOR = theme.get_color(&"scene_cell_border", &"MetSys")
 		GRID_PASSAGE_COLOR = theme.get_color(&"scene_room_exit", &"MetSys")
-	
 	_update_assigned_scene()
 	
 	if Engine.is_editor_hint():
@@ -73,7 +73,7 @@ func _update_assigned_scene():
 
 func _update_neighbor_previews():
 	get_tree().call_group(&"_MetSys_RoomPreview_", &"queue_free")
-	
+	#print(cells)
 	for coords in cells:
 		var cell_data: MetroidvaniaSystem.MapData.CellData = MetSys.map_data.get_cell_at(coords)
 		assert(cell_data,"No cell data found")
@@ -87,12 +87,13 @@ func _update_neighbor_previews():
 				var neicell: MetroidvaniaSystem.MapData.CellData = MetSys.map_data.get_cell_at(coords + Vector3i(fwd.x, fwd.y, 0))
 				if neicell:
 					show_neightbor = neicell.borders[(i + 2) % 4] > 0
-			
+			print(show_neightbor)
 			if show_neightbor:
 				var next_coords := coords + Vector3i(fwd.x, fwd.y, 0)
 				var scene: String = MetSys.map_data.get_assigned_scene_at(next_coords)
 				
 				if scene.is_empty() or scene == room_id:
+					print("empty")
 					continue
 				
 				var next_cells: Array[Vector3i] = MetSys.map_data.get_whole_room(next_coords)
@@ -109,13 +110,13 @@ func _update_neighbor_previews():
 				preview.offset = Vector2(next_coords.x, next_coords.y) - Vector2(min_cell)
 				preview.offset -= Vector2(next_coords.x, next_coords.y) - Vector2(next_min_cell)
 				add_child(preview)
-				
+				print(preview)
 				var temp_map: Node2D = load(scene).instantiate()
 				temp_map.modulate.a = 0.5
 				temp_map.set_meta(&"fake_map", true)
 				
 				preview.add_room(temp_map, i, next_min_cell - Vector2i(next_coords.x, next_coords.y))
-	
+	print("children: "+ str(get_children()))
 	previews_updated.emit()
 
 ## Adjusts the limits of the given [param camera] to be within this room's rectangular bounds.
@@ -169,7 +170,7 @@ func get_neighbor_rooms() -> Array[String]:
 					scene = MetSys.map_data.get_room_friendly_name(scene)
 					if not scene in ret:
 						ret.append(scene)
-	
+	print(ret)
 	return ret
 
 func _draw() -> void:
